@@ -17,7 +17,6 @@ steps:
 - script:
     npm install -g @angular/cli
     npm install
-    node node_modules/.bin/webdriver-manager update --versions.chrome=77.0.3865.40
     ng build --prod
   displayName: 'npm install and build'
 
@@ -36,11 +35,10 @@ steps:
     command: custom
     customCommand: run test -- --watch=false --code-coverage
 
-- task: Npm@1
-  displayName: 'Test e2e Angular'
-  inputs:
-    command: custom
-    customCommand: run e2e
+- script: |
+    node node_modules/.bin/webdriver-manager update --versions.chrome=77.0.3865.40
+    ng e2e --webdriverUpdate=false
+  displayName: 'Test e2e Angular '
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage Angular results'
